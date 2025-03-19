@@ -30,15 +30,13 @@ arraysOfCells.forEach(it => {
 
 //Part 3: Transforming Data
 let arrayOfObjects = [];
-arraysOfCells.forEach(it => {
-    arrayOfObjects.push({
-        id: it[0],
-        name: it[1].toLowerCase(),
-        occupation: it[2].toLowerCase(),
-        age: it[3]
-    })
-})
-arrayOfObjects.shift(); //removing the header
+for (let i=1;i<arraysOfCells.length;i++){
+    let obj = {};
+    for (let j=0;j<arraysOfCells[0].length;j++){
+        obj[arraysOfCells[0][j].toLowerCase()] = arraysOfCells[i][j]
+    }
+    arrayOfObjects.push(obj);
+}
 
 console.log("-------------Array of objects--------------------");
 arrayOfObjects.forEach(it => {
@@ -55,14 +53,14 @@ arrayOfObjects.forEach(it => {
 })
 
 //2.Insert the following object at index 1:
-arrayOfObjects.splice(1, 0, { id: "48", name: "Barry".toLowerCase(), occupation: "Runner".toLowerCase(), age: "25" }) //toLowerCase() is for consistancy of objects
+arrayOfObjects.splice(1, 0, { id: "48", name: "Barry".toLowerCase(), occupation: "Runner".toLowerCase(), age: "25",tag:"new" }) //toLowerCase() is for consistancy of objects
 console.log("-------------Array of objects (object inserted at index 1)--------------------");
 arrayOfObjects.forEach(it => {
     console.log(it);
 })
 
 //3.Add the following object to the end of the array:
-arrayOfObjects.push({ id: "7", name: "Bilbo".toLowerCase(), occupation: "None".toLowerCase(), age: "111" })
+arrayOfObjects.push({ id: "7", name: "Bilbo".toLowerCase(), occupation: "None".toLowerCase(), age: "111",tag:"old" })
 console.log("-------------Array of objects (object added at the end)--------------------");
 arrayOfObjects.forEach(it => {
     console.log(it);
@@ -77,14 +75,20 @@ averageAge /= arrayOfObjects.length;
 console.log(`Avarage age of persons are ${averageAge}`);
 
 //Part 5: Full Circle
-let CSV = `ID,Name,Occupation,Age\n`;
-arrayOfObjects.forEach(object => {
+let csv=``;
+for (key in arrayOfObjects[0]){//first add names of keys in csv
+    csv+= key+`,`;
+}
+csv = csv.slice(0, -1);// remove the last `,`
+csv+='\n';
+
+arrayOfObjects.forEach(object => { //second add the values to csv
     for (cell in object){
-        CSV+=object[cell]+`,`;
+        csv+=object[cell]+`,`;
     }
-    CSV = CSV.slice(0, -1);// remove the last `,`
-    CSV+='\n';
+    csv = csv.slice(0, -1);// remove the last `,`
+    csv+='\n';
 })
-CSV = CSV.slice(0, -1);// remove the last `\n`
+csv = csv.slice(0, -1);// remove the last `\n`
 console.log("-------------New CSV (Full Circle)--------------------");
-console.log(CSV);
+console.log(csv);
