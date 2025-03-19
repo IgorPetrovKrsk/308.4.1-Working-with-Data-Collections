@@ -7,32 +7,25 @@ let currentCell = "";
 let currentColumn = 0;
 let numberOfColumns = 0;
 let numberOfRows = 0;
+arraysOfCells[numberOfRows][currentColumn] = "";
 for (ch of sampleData) {
     if (ch == `,`) {
-        arraysOfCells[numberOfRows][currentColumn] = currentCell;
-        currentCell = "";
         currentColumn++;
+        arraysOfCells[numberOfRows][currentColumn] = "";
     } else if (ch == `\n`) {
-        //console.log(cell[0], cell[1], cell[2], cell[3]);
-        arraysOfCells[numberOfRows][currentColumn] = currentCell;
         numberOfRows++; //starting a new row
         arraysOfCells[numberOfRows] = []; //starting a new array for row
         numberOfColumns = currentColumn; //all rows contain the same number of columns
         currentColumn = 0;
-        currentCell = "";
-
+        arraysOfCells[numberOfRows][currentColumn] = "";//reset a new string in a row
     } else {
-        //arraysOfCells[numberOfRows][currentColumn] += ch;
-        currentCell += ch;
+        arraysOfCells[numberOfRows][currentColumn] += ch;
     }
-}
-if (sampleData[sampleData.length] != '\n') { //if sample data doest end with \n then we should output last row
-    arraysOfCells[numberOfRows][currentColumn] = currentCell;
 }
 
 console.log("-------------Array of cells--------------------");
 arraysOfCells.forEach(it => {
-     console.log(it);
+    console.log(it);
 })
 
 //Part 3: Transforming Data
@@ -49,7 +42,7 @@ arrayOfObjects.shift(); //removing the header
 
 console.log("-------------Array of objects--------------------");
 arrayOfObjects.forEach(it => {
-     console.log(it);
+    console.log(it);
 })
 
 
@@ -58,35 +51,40 @@ arrayOfObjects.forEach(it => {
 arrayOfObjects.pop()
 console.log("-------------Array of objects (last object removed)--------------------");
 arrayOfObjects.forEach(it => {
-     console.log(it);
+    console.log(it);
 })
 
 //2.Insert the following object at index 1:
-arrayOfObjects.splice(1,0,{ id: "48", name: "Barry".toLowerCase(), occupation: "Runner".toLowerCase(), age: "25" }) //toLowerCase() is for consistancy of objects
+arrayOfObjects.splice(1, 0, { id: "48", name: "Barry".toLowerCase(), occupation: "Runner".toLowerCase(), age: "25" }) //toLowerCase() is for consistancy of objects
 console.log("-------------Array of objects (object inserted at index 1)--------------------");
 arrayOfObjects.forEach(it => {
-     console.log(it);
+    console.log(it);
 })
 
 //3.Add the following object to the end of the array:
 arrayOfObjects.push({ id: "7", name: "Bilbo".toLowerCase(), occupation: "None".toLowerCase(), age: "111" })
 console.log("-------------Array of objects (object added at the end)--------------------");
 arrayOfObjects.forEach(it => {
-     console.log(it);
+    console.log(it);
 })
 
 //Finally calculate the average age of the group
 let averageAge = 0;
-for (object of arrayOfObjects){
-    averageAge+= parseInt(object.age)
+for (object of arrayOfObjects) {
+    averageAge += parseInt(object.age)
 }
-averageAge/=arrayOfObjects.length;
+averageAge /= arrayOfObjects.length;
 console.log(`Avarage age of persons are ${averageAge}`);
 
 //Part 5: Full Circle
-let CSV = JSON.stringify({id:`ID`, name:`Name`,occupation:`Occupation`,age:`Age`})+`\n`;
-arrayOfObjects.forEach (it =>{
-    CSV+=JSON.stringify(it)+`\n`
+let CSV = `ID,Name,Occupation,Age\n`;
+arrayOfObjects.forEach(object => {
+    for (cell in object){
+        CSV+=object[cell]+`,`;
+    }
+    CSV = CSV.slice(0, -1);// remove the last `,`
+    CSV+='\n';
 })
+CSV = CSV.slice(0, -1);// remove the last `\n`
 console.log("-------------New CSV (Full Circle)--------------------");
 console.log(CSV);
